@@ -1,10 +1,9 @@
-import React from "react";
-import {
-  Prism as SyntaxHighlighter,
-} from "react-syntax-highlighter";
-import gfm from "remark-gfm";
-import ReactMarkdown from "react-markdown";
-import theme from './theme'
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import gfm from 'remark-gfm';
+
+import theme from './theme';
 
 const renderers = {
   code: ({ language, value }) => {
