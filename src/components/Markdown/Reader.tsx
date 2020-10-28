@@ -7,13 +7,17 @@ import theme from './theme';
 
 const renderers = {
   code: ({ language, value }) => {
-    return <SyntaxHighlighter style={theme} language={language} children={value} />;
+    return (
+      <SyntaxHighlighter style={theme} language={language}>
+        {value}
+      </SyntaxHighlighter>
+    );
   },
 };
 
 export default function Reader({ children }) {
   return (
-    <ReactMarkdown renderers={renderers} plugins={[gfm, { singleTilde: true }]}>
+    <ReactMarkdown renderers={renderers} plugins={[gfm]}>
       {children}
     </ReactMarkdown>
   );
