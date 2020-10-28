@@ -1,11 +1,21 @@
 import React from 'react'
-import Reader from '../components/reader'
+import axios from 'axios'
+import ReactMarkdown from '../components/Markdown/Reader'
 
-export default function index() {
+const Index = ({markdown}) => {
   return (
-    <div>
-      Tiexqxq
-      <Reader></Reader>
-    </div>
+     <ReactMarkdown>
+      {markdown}
+     </ReactMarkdown>
   )
 }
+
+Index.getInitialProps = async () => {
+  const {data} = await axios.get('https://raw.githubusercontent.com/liferay/liferay-frontend-guidelines/master/dxp/how_to_minimize_bleeding_themes.md');
+
+  return {
+    markdown: data
+  }
+}
+
+export default Index;
