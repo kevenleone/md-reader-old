@@ -1120,6 +1120,17 @@
     "@clayui/layout" "^3.2.0"
     classnames "^2.2.6"
 
+"@clayui/nav@^3.4.0":
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/@clayui/nav/-/nav-3.4.0.tgz#42410882537ba00a146b0117a21881246ee81ada"
+  integrity sha512-JTHCJyZ+MytsFUuJCtZUpweCeC+rBBAQcjh+Xt6Gc/lIqP6OufeJqqsrrT5I0R83+O0YFaZJPbjWTv+DZUCCgg==
+  dependencies:
+    "@clayui/button" "^3.5.0"
+    "@clayui/icon" "^3.1.0"
+    "@clayui/shared" "^3.3.0"
+    classnames "^2.2.6"
+    warning "^4.0.3"
+
 "@clayui/navigation-bar@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@clayui/navigation-bar/-/navigation-bar-3.3.0.tgz#291180888ee71407e877e05323babe41faf75892"

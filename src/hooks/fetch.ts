@@ -8,12 +8,12 @@ const usePost = (url: string, body?: Object) => {
   return axios.post(url, body);
 };
 
-const useQuery = (query, variables) => {
+const useQuery = (query, variables?) => {
   return axios
     .create({
       baseURL: 'https://api.github.com/graphql',
       headers: {
-        Authorization: `bearer ${process.env.REACT_APP_GITHUB_API_KEY}`,
+        Authorization: `bearer ${process.env.NEXT_PUBLIC_GITHUB_API_KEY}`,
       },
     })
     .post('', { query, variables });
