@@ -8,7 +8,7 @@ interface ILayout {
   children: React.ReactElement;
 }
 
-const Layout: React.FC = ({ children, props }: ILayout) => {
+const Layout: React.FC = ({ children }: ILayout) => {
   return (
     <div className="layout">
       <NavigationBar />
