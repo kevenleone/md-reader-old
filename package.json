@@ -8,15 +8,24 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clayui/button": "^3.5.0",
+    "@clayui/css": "^3.19.0",
+    "@clayui/icon": "^3.1.0",
+    "@clayui/layout": "^3.2.0",
+    "@clayui/management-toolbar": "^3.2.3",
+    "@clayui/navigation-bar": "^3.3.0",
     "@next/mdx": "^10.0.0",
+    "@zeit/next-css": "^1.0.1",
     "axios": "^0.21.0",
     "next": "10.0.0",
     "next-compose-plugins": "^2.2.0",
+    "next-images": "^1.6.2",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-markdown": "^5.0.2",
     "react-syntax-highlighter": "^15.2.1",
-    "remark-gfm": "^1.0.0"
+    "remark-gfm": "^1.0.0",
+    "sass": "^1.27.1"
   },
   "devDependencies": {
     "@types/node": "^14.14.6",
