@@ -12,12 +12,10 @@ const Layout: React.FC = ({ children }: ILayout) => {
   return (
     <div className="layout">
       <NavigationBar />
-      <ClayLayout.Row>
-        <ClayLayout.Col xl={2}>
-          <Sidebar />
-        </ClayLayout.Col>
-        <ClayLayout.ContainerFluid className="p-4 children-content">{children}</ClayLayout.ContainerFluid>
-      </ClayLayout.Row>
+      <Sidebar />
+      <ClayLayout.ContainerFluid>
+        <div className="p-4 children-content">{children}</div>
+      </ClayLayout.ContainerFluid>
     </div>
   );
 };

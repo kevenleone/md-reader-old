@@ -2,17 +2,28 @@
     background-color: white;
     color: black;
     display: flex;
-    text-align: center;
-    justify-content: center;
     max-height: 100vh;
     position: fixed;
     width: 350px;
     top: 60px;
+    flex-direction: column;
+
+    .title {
+        text-align: center;
+    }
+
+    .markdown-item {
+        padding: 10px 30px;
+    }
+
+    .tree {
+        font-size: 14px;
+    }
 }
 
 .layout {
     .children-content {
-        margin-left: 320px; /* Add a top margin to avoid content overlay */
+        margin-left: 350px; /* Add a top margin to avoid content overlay */
         margin-top: 100px; /* Add a top margin to avoid content overlay */
     }
 }
