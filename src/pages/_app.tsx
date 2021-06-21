@@ -1,20 +1,25 @@
-import '../../styles/globals.scss';
-import '@clayui/css/lib/css/atlas.css';
+import "@clayui/css/lib/css/atlas.css";
+import "../styles/main.scss";
 
-import { ClayIconSpriteContext } from '@clayui/icon';
-import React from 'react';
+import { ClayIconSpriteContext } from "@clayui/icon";
+import { Provider } from "next-auth/client";
+import { AppProps } from "next/app";
 
-import Layout from '../components/Layout';
-const spritemap = require('../assets/spritemap.svg');
+import ApplicationLayout from "@/components/layout";
+import AppContextProvider from "@/providers/AppContextProvider";
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <ClayIconSpriteContext.Provider value={spritemap}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
+  <div id="application-root">
+    <ClayIconSpriteContext.Provider value="/spritemap.svg">
+      <AppContextProvider>
+        <Provider session={pageProps.session}>
+          <ApplicationLayout>
+            <Component {...pageProps} />
+          </ApplicationLayout>
+        </Provider>
+      </AppContextProvider>
     </ClayIconSpriteContext.Provider>
-  );
-}
+  </div>
+);
 
 export default MyApp;

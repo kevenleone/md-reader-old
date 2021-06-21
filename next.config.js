@@ -1,15 +1,17 @@
-const withPlugins = require("next-compose-plugins");
-const withImages = require('next-images')
+/* eslint-disable @typescript-eslint/no-var-requires */
+const withImages = require("next-images");
+const path = require("path");
 
-const nextConfig = {
-  exportPathMap: false
-};
-
-const images = withImages({
+module.exports = withImages({
   esModules: true,
-})
-
-module.exports = withPlugins(
-  [images],
-  nextConfig
-);
+  i18n: {
+    defaultLocale: "en-US",
+    localeDetection: true,
+    locales: ["en-US", "pt-BR"],
+  },
+  resolve: {
+    alias: {
+      "@": path.join(__dirname, "src"),
+    },
+  },
+});

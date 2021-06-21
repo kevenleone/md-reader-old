@@ -1,0 +1,29 @@
+.layout-component {
+  --landscape-width: 240px; // % OR vw for responsive window resizing!
+  --secs: 0.2s;
+
+  background-color: #f1f2f5;
+  display: flex;
+
+  &__contents {
+    width: 100vh;
+    flex: 1;
+  }
+
+  .sidebar-component {
+    transition: width var(--secs);
+    width: 0;
+
+    &.open {
+      width: var(--landscape-width);
+    }
+
+    &__content {
+      transition: transform var(--secs); // <-- Portrait AND landscape!
+    }
+
+    &.closed {
+      overflow: auto;
+    }
+  }
+}

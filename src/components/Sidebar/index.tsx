@@ -1,68 +1,29 @@
-import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
-import React, { useEffect, useState } from 'react';
+import { ClayVerticalNav } from "@clayui/nav";
+import classNames from "classnames";
+import React from "react";
 
-import { getRepositoryTree } from '../../graphql/schemas';
-import { useQuery } from '../../hooks/fetch';
+import useLang from "@/hooks/useLang";
 
-const markDownExt = '.md';
-
-const getTreeIcon = (tree) => {
-  return tree.extension === markDownExt ? 'document' : 'folder';
+type SidebarProps = {
+  className?: string;
+  itemsMenu: typeof ClayVerticalNav.defaultProps.items | any;
+  // Remove this any after release the new version of @clayui/nav
 };
 
-const isTreeOrMD = (tree) => {
-  return tree.extension === markDownExt || tree.object?.entries?.some(isTreeOrMD);
-};
-
-const Sidebar = () => {
-  const [trees, setTrees] = useState([]);
-
-  const getTrees = async () => {
-    const { data } = await useQuery(getRepositoryTree);
-    const entries = data.data.repository?.defaultBranchRef?.target?.tree?.entries;
-    setTrees(entries);
-    console.log(entries);
-  };
-
-  useEffect(() => {
-    getTrees();
-  }, []);
-
-  console.log({ trees });
-  const getTreeName = (name) => (name.length > 20 ? `${name.substring(0, 20)}...md` : name);
-
-  const RenderTrees = ({ trees: treeList }) => {
-    return (
-      <div>
-        {treeList.map(
-          (tree) =>
-            isTreeOrMD(tree) && (
-              <div className="markdown-item" key={tree.name}>
-                <ClayButton displayType="unstyled">
-                  <span className="inline-item inline-item-before">
-                    <ClayIcon symbol={getTreeIcon(tree)} />
-                  </span>
-                  <span className="tree">{getTreeName(tree.name)}</span>
-                </ClayButton>
-                {tree.object?.entries?.length && <RenderTrees trees={tree.object?.entries} />}
-              </div>
-            ),
-        )}
-      </div>
-    );
-  };
+const Sidebar: React.FC<SidebarProps> = ({ className, itemsMenu }) => {
+  const i18n = useLang();
 
   return (
-    <div className="sidebar">
-      <div className="title">
-        <h3>MD List</h3>
-      </div>
-      <div className="content">
-        <RenderTrees trees={trees} />
+    <div className={classNames("sidebar-component", className)}>
+      <div className="sidebar-component__content">
+        <div className="sidebar-component__title">
+          <img src="/assets/dxp-icon.svg"></img>
+          <span className="ml-2">{i18n.get("app-title")}</span>
+        </div>
+        <ClayVerticalNav items={itemsMenu} large={false} />
       </div>
     </div>
   );
 };
 
-export default React.memo(Sidebar);
+export default Sidebar;
