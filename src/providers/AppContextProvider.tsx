@@ -1,5 +1,6 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 
+import supabase from "@/services/supabase";
 import { ActionMap } from "@/types";
 
 export enum AppTypes {
@@ -17,9 +18,8 @@ type InitialState = {
   navigationBarTitle: string;
 };
 
-export type AppActions = ActionMap<ActionsPayload>[keyof ActionMap<
-  ActionsPayload
->];
+export type AppActions =
+  ActionMap<ActionsPayload>[keyof ActionMap<ActionsPayload>];
 
 const initialState = {
   navigationBarTitle: "",
@@ -46,6 +46,19 @@ const AppContext = createContext<[InitialState, (param: AppActions) => void]>([
 const AppContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loaded, setLoaded] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  const getBookmarks = async () => {
+    const { data, error } = await supabase.from("bookmarks");
+
+    console.log({ data });
+
+    setBookmarks(data);
+  };
+
+  useEffect(() => {
+    getBookmarks();
+  }, []);
 
   useEffect(() => {
     const localStorageSidebar = localStorage.getItem("application-sidebar");

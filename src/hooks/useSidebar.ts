@@ -12,9 +12,8 @@ type UseSidebar = {
 };
 
 const useSidebar = ({ showSidebar }: UseSidebarProps): UseSidebar => {
-  const [{ showSidebar: showSidebarInitial }, dispatch] = useContext(
-    AppContext
-  );
+  const [{ showSidebar: showSidebarInitial }, dispatch] =
+    useContext(AppContext);
 
   const toggleSidebar = () => {
     const payload = showSidebar ?? !showSidebarInitial;

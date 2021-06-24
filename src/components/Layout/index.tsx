@@ -20,7 +20,7 @@ const Layout: React.FC = ({ children }) => {
         {
           active: true,
           label: i18n.get("Bookmarks"),
-          onClick: () => router.push("/session"),
+          onClick: () => router.push("/bookmark"),
         },
       ],
       label: (

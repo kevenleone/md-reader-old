@@ -2,7 +2,7 @@ import ClayLoadingIndicator from "@clayui/loading-indicator";
 import classNames from "classnames";
 import React from "react";
 
-export const LoadingComponent = ({ className }) => (
+const Loading = ({ className }) => (
   <div
     className={classNames("align-items-center", "d-flex", "w-100", className)}
   >
@@ -15,7 +15,7 @@ export const withLoading = (Component) => {
     const { className, isLoading, ...restProps } = props;
 
     if (isLoading) {
-      return <LoadingComponent className={className} />;
+      return <Loading className={className} />;
     }
 
     return <Component {...restProps} />;
@@ -23,3 +23,5 @@ export const withLoading = (Component) => {
 
   return Wrapper;
 };
+
+export default Loading;

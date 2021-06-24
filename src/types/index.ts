@@ -8,3 +8,10 @@ export type ActionMap<M extends { [index: string]: any }> = {
         payload: M[Key];
       };
 };
+
+export type FileTree = {
+  path: string;
+  mode: string;
+  type: string;
+  url: string;
+};
