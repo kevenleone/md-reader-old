@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React from "react";
 
 interface IMeta extends React.HTMLAttributes<HTMLElement> {
@@ -10,10 +9,7 @@ interface IMeta extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Meta: React.FC<IMeta> = ({ description, icon, image, title }) => {
-  const router = useRouter();
-  const { asPath } = router;
-  const baseURL = window?.location?.href;
-  const url = `${baseURL}${asPath}`;
+  const url = window?.location?.href;
 
   return (
     <Head>

@@ -6,8 +6,7 @@ import useLang from "@/hooks/useLang";
 
 type SidebarProps = {
   className?: string;
-  itemsMenu: typeof ClayVerticalNav.defaultProps.items | any;
-  // Remove this any after release the new version of @clayui/nav
+  itemsMenu: typeof ClayVerticalNav.defaultProps.items;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ className, itemsMenu }) => {
