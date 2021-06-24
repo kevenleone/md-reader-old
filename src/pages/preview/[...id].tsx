@@ -1,11 +1,11 @@
 import ClayBreadcrumb from "@clayui/breadcrumb";
 import ClayLayout from "@clayui/layout";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 
 import Loading from "@/components/loading/Loading";
 import Markdown from "@/components/markdown";
-import Meta from "@/components/meta";
 import TreeView from "@/components/tree/TreeView";
 import useLang from "@/hooks/useLang";
 import { fetcher } from "@/services/fetch";
@@ -58,7 +58,7 @@ const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
 
   return (
     <ClayLayout.Container>
-      <Meta title={i18n.sub("app-title-x", contentName, false)} />
+      <NextSeo title={i18n.sub("app-title-x", contentName, false)} />
 
       <ClayBreadcrumb
         className="mt-4 mb-3"

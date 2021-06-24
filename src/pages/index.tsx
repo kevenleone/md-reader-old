@@ -1,4 +1,5 @@
-import Meta from "@/components/meta";
+import { NextSeo } from "next-seo";
+
 import useLang from "@/hooks/useLang";
 
 const Index: React.FC = () => {
@@ -6,7 +7,7 @@ const Index: React.FC = () => {
 
   return (
     <div className="pl-5 pr-5">
-      <Meta
+      <NextSeo
         title={i18n.sub("app-title-x", "home")}
         description={i18n.get("site-description")}
       />
