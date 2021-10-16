@@ -9,3 +9,11 @@ export type FileTree = {
 export type Views = {
   total: number;
 };
+
+export type Repo = {
+  description: string;
+  id: number;
+  owner: {
+    avatar_url: string;
+  };
+};

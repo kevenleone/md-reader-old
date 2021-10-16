@@ -1,4 +1,4 @@
-import cn from "classnames";
+import classNames from "classnames";
 import Link from "next/link";
 import useSWR from "swr";
 
@@ -12,7 +12,7 @@ export default function BlogPostCard({ gradient, slug, title }) {
   return (
     <Link href={`/blog/${slug}`}>
       <a
-        className={cn(
+        className={classNames(
           "transform hover:scale-[1.01] transition-all",
           "rounded-xl w-full md:w-1/3 bg-gradient-to-r p-1",
           gradient
@@ -46,7 +46,7 @@ export default function BlogPostCard({ gradient, slug, title }) {
               />
             </svg>
             <span className="ml-2 align-baseline capsize">
-              {views ? new Number(views).toLocaleString() : "–––"}
+              {views ? Number(views).toLocaleString() : "–––"}
             </span>
           </div>
         </div>

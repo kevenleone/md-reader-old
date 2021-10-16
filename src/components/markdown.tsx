@@ -1,14 +1,19 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
+// import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeCodeTitles from "rehype-code-titles";
 import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
-import components from "./MDXComponents";
+import components, { MDXComponentsOptions } from "./MDXComponents";
 
-export default function Reader({ children, params = {} }) {
+type MarkdownProps = {
+  params: MDXComponentsOptions;
+  children: string;
+};
+
+const Markdown: React.FC<MarkdownProps> = ({ children, params }) => {
   const updateComponents = components(params);
 
   return (
@@ -20,4 +25,6 @@ export default function Reader({ children, params = {} }) {
       {children}
     </ReactMarkdown>
   );
-}
+};
+
+export default Markdown;

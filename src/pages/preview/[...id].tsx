@@ -14,27 +14,14 @@ type PreviewProps = {
 };
 
 const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
-  const {
-    isFallback,
-    query: { id = [] },
-  } = useRouter();
+  const { isFallback } = useRouter();
 
   if (isFallback) {
     return <b>Loading</b>;
   }
 
-  const userAccount = `${id[0]}/${id[1]}`;
-
   if (fileTree.length) {
-    return (
-      <FileTreeLayout
-        fileTree={fileTree}
-        user={{
-          avatar_url: `https://github.com/${id[0]}.png`,
-          name: userAccount,
-        }}
-      />
-    );
+    return <FileTreeLayout fileTree={fileTree} />;
   }
 
   return <BlogLayout markdown={markdown} />;

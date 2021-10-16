@@ -4,6 +4,11 @@ import Link from "next/link";
 import ImageWithTheme from "./ImageWithTheme";
 import Step from "./Step";
 
+export interface MDXComponentsOptions {
+  path: string[];
+  project: string;
+}
+
 const countSubPaths = (path: string) => {
   return path.split("../").length - 1;
 };
@@ -27,13 +32,7 @@ function RoundedImage(props) {
   return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
-const MDXComponents = ({
-  path,
-  project,
-}: {
-  project: string;
-  path: string[];
-}): any => {
+const MDXComponents = ({ path, project }: MDXComponentsOptions): any => {
   return {
     Image: RoundedImage,
     ImageWithTheme,

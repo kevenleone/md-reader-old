@@ -3,28 +3,28 @@ import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 
+import Container from "@/components/Container";
 import FileTreeList from "@/components/FileTree";
-import { FileTree } from "@/lib/types";
-
-import Container from "../components/Container";
-import fetcher from "../lib/fetcher";
+import fetcher from "@/lib/fetcher";
+import { FileTree, Repo } from "@/lib/types";
 
 type FileTreeLayoutProps = {
   fileTree: FileTree[];
 };
 
-const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree, user }) => {
+const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree }) => {
   const {
     query: { id = [] },
   } = useRouter();
 
   const [account, repository] = id;
-  const { data: repo = {} } = useSWR(
+
+  const { data: repo = {} as Repo } = useSWR<Repo>(
     `https://api.github.com/repos/${account}/${repository}`,
     fetcher
   );
 
-  const avatar_url = repo?.owner?.avatar_url;
+  const avatar_url = repo.owner?.avatar_url;
 
   return (
     <Container>
@@ -32,11 +32,11 @@ const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree, user }) => {
         <div className="flex flex-col-reverse sm:flex-row items-start">
           <div className="flex flex-col pr-8">
             <h1 className="font-bold text-3xl md:text-6xl tracking-tight mb-1 text-black dark:text-white">
-              {user.name}
+              {`${account}/${repository}`}
             </h1>
 
             <p className="mt-5 text-gray-600 dark:text-gray-400 mb-8">
-              {repo?.description}
+              {repo.description}
             </p>
           </div>
           {avatar_url && (

@@ -16,5 +16,5 @@ export function fetcher<T = any>(
 
       throw new Error("err");
     })
-    .catch((error) => {});
+    .catch((error) => error);
 }
