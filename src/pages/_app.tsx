@@ -1,7 +1,18 @@
-import "tailwindcss/tailwind.css";
+import '../styles/global.css';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+import type { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
+import { SessionProvider } from 'next-auth/react';
+import { useAnalytics } from '../lib/analytics';
+
+export default function App({ Component, pageProps }: AppProps) {
+  useAnalytics();
+
+  return (
+    <SessionProvider session={pageProps.session}>
+      <ThemeProvider attribute="class">
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </SessionProvider>
+  );
 }
-
-export default MyApp;

@@ -1,17 +1,13 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const withImages = require("next-images");
-const path = require("path");
-
-module.exports = withImages({
-  esModules: true,
-  i18n: {
-    defaultLocale: "en-US",
-    localeDetection: true,
-    locales: ["en-US", "pt-BR"],
+/**
+ * @type {import('next').NextConfig}
+ */
+module.exports = {
+  images: {
+    domains: ["avatars.githubusercontent.com", "github.com"],
   },
-  resolve: {
-    alias: {
-      "@": path.join(__dirname, "src"),
-    },
+  experimental: {
+    esmExternals: true,
+    swcLoader: true,
+    swcMinify: true,
   },
-});
+};

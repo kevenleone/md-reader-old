@@ -1,80 +1,43 @@
-import ClayBreadcrumb from "@clayui/breadcrumb";
-import ClayLayout from "@clayui/layout";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import React from "react";
+import BlogLayout from "src/layouts/blog";
+import FileTreeLayout from "src/layouts/file-tree";
 
-import Loading from "@/components/loading/Loading";
-import Markdown from "@/components/markdown";
-import TreeView from "@/components/tree/TreeView";
-import useLang from "@/hooks/useLang";
-import { fetcher } from "@/services/fetch";
-import { FileTree } from "@/types";
-
-const fileType = (type) => (type === "blob" ? "z" : "a");
-
-const getFileName = (id: string[]) => [...id].pop();
+import { fetcher } from "../../lib/fetch";
 
 type PreviewProps = {
+  account: any;
+  fileTree: any[];
   markdown: string;
-  fileTree: FileTree[];
+  repository: string;
 };
-
-interface TreeResponse {
-  sha: string;
-  url: string;
-  tree: FileTree[];
-}
-
-interface BlobResponse {
-  sha: string;
-  node_id: string;
-  url: string;
-  size: number;
-  content: string;
-}
 
 const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
   const {
     isFallback,
-    push,
     query: { id = [] },
   } = useRouter();
 
-  const i18n = useLang();
-
-  const contentName = getFileName(id as string[]);
-
-  const filePaths = (id as string[]).map((path, index, array) => ({
-    active: index === array.length - 1,
-    label: path,
-    onClick: () =>
-      push(`/preview/${[...array].splice(0, index + 1).join("/")}`),
-  }));
-
   if (isFallback) {
-    return <Loading className="mt-4" />;
+    return <b>Loading</b>;
   }
 
-  return (
-    <ClayLayout.Container>
-      <NextSeo title={i18n.sub("app-title-x", contentName, false)} />
+  const userAccount = `${id[0]}/${id[1]}`;
 
-      <ClayBreadcrumb
-        className="mt-4 mb-3"
-        ellipsisBuffer={3}
-        items={filePaths}
+  if (fileTree.length) {
+    return (
+      <FileTreeLayout
+        fileTree={fileTree}
+        user={{
+          avatar_url: `https://github.com/${id[0]}.png`,
+          name: userAccount,
+        }}
       />
+    );
+  }
 
-      <>
-        {markdown && <Markdown>{markdown}</Markdown>}
-
-        {fileTree.length > 0 && (
-          <TreeView path={(id as string[]).join("/")} fileTree={fileTree} />
-        )}
-      </>
-    </ClayLayout.Container>
-  );
+  return <BlogLayout markdown={markdown} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -82,35 +45,31 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: true,
     paths: [
       { params: { id: ["liferay-labs-br", "liferay-grow"] } },
-      { params: { id: ["liferay", "liferay-frontend-guidelines"] } },
+      { params: { id: ["liferay", "liferay-frontend-projects"] } },
     ],
   };
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const [account, repository, ...path] = ctx.params.id;
+  const [account, repository, ...path] = ctx.params.id as string[];
 
   let markdown = "";
   let fileTree = [];
   let notFound = false;
 
-  const fileName = getFileName(path);
-
   if (account && repository) {
     try {
-      const data = await fetcher<TreeResponse>(
+      const data = await fetcher<any>(
         `https://api.github.com/repos/${account}/${repository}/git/trees/HEAD:?recursive=1`
       );
 
       if (path.length) {
-        const fileExistOnGithub = data.tree?.find(({ path }) =>
-          path.includes(fileName)
+        const fileExistOnGithub = data.tree?.find(
+          ({ path: filePath }) => path.join("/") === filePath
         );
 
         if (fileExistOnGithub) {
-          const response = await fetcher<BlobResponse & TreeResponse>(
-            fileExistOnGithub.url
-          );
+          const response = await fetcher<any>(fileExistOnGithub.url);
 
           if (fileExistOnGithub.type === "blob") {
             markdown = Buffer.from(response.content, "base64").toString(
@@ -121,11 +80,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           }
         }
       } else {
-        fileTree = data.tree
-          .filter(({ path }) => !path.includes("/"))
-          .sort((a, b) => fileType(a.type).localeCompare(fileType(b.type)));
+        fileTree = data.tree.filter(({ path }) => !path.includes("/"));
       }
     } catch (err) {
+      console.error(err);
       notFound = true;
     }
   }
@@ -133,8 +91,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     notFound,
     props: {
+      account,
       fileTree,
       markdown,
+      path,
+      repository,
     },
     revalidate: 60 * 60 * 24, // 24 hours
   };
