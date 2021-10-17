@@ -10,6 +10,7 @@ import ProfileLayout from "@/layouts/profile";
 import { fetcher } from "@/lib/fetch";
 import prisma from "@/lib/prisma";
 import { User } from "@/lib/types";
+import { getFilePath } from "@/lib/util";
 
 type ProfileProps = {
   article: Articles;
@@ -59,18 +60,18 @@ const Profile: React.FC<ProfileProps> = ({
             Logout
           </button>
         </div>
-
-        <hr className="" />
-
-        {article && (
-          <Article
-            breadCrumbPath={asPath.split("/").filter(Boolean)}
-            markdown={markdown}
-            publishedAt={article.created_at.toISOString()}
-            author={{ avatar_url: user.avatar_url, name: article.name }}
-          />
-        )}
       </ProfileLayout>
+
+      {article && (
+        <Article
+          filePath={getFilePath(article.fileUrl)}
+          title={article.name}
+          breadCrumbPath={asPath.split("/").filter(Boolean)}
+          markdown={markdown}
+          publishedAt={article.created_at.toISOString()}
+          author={{ avatar_url: user.avatar_url, name: article.name }}
+        />
+      )}
     </Container>
   );
 };

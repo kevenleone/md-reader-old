@@ -9,10 +9,17 @@ export default async function handler(
 ) {
   try {
     if (req.method === "POST") {
-      const { fileUrl, folderId, name, userId } = req.body;
+      const { featured, fileUrl, folderId, name, userId } = req.body;
 
       const article = await prisma.articles.create({
-        data: { fileUrl, folderId, name, slug: slugify(name), userId },
+        data: {
+          featured,
+          fileUrl,
+          folderId,
+          name,
+          slug: slugify(name),
+          userId,
+        },
       });
 
       return res.status(200).json({ article });

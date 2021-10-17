@@ -11,11 +11,17 @@ import { User } from "@/lib/types";
 
 type ProfileProps = {
   folders: Folder[];
+  featuredArticles: Articles[];
   articles: Articles[];
   user: User;
 };
 
-const Profile: React.FC<ProfileProps> = ({ articles, folders, user }) => {
+const Profile: React.FC<ProfileProps> = ({
+  articles,
+  featuredArticles,
+  folders,
+  user,
+}) => {
   const { isFallback } = useRouter();
 
   if (isFallback) {
@@ -28,7 +34,12 @@ const Profile: React.FC<ProfileProps> = ({ articles, folders, user }) => {
 
   return (
     <Container>
-      <ProfileLayout articles={articles} folders={folders} user={user}>
+      <ProfileLayout
+        featuredArticles={featuredArticles}
+        articles={articles}
+        folders={folders}
+        user={user}
+      >
         <div>
           <button
             className="p-3 dark:bg-white bg-black rounded mb-8"
@@ -70,6 +81,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     params: { user: username },
   } = ctx;
 
+  const featuredArticles = [];
+  const articles = [];
+
   const [githubUser, user] = await Promise.all([
     fetcher<User>(`https://api.github.com/users/${username}`),
     prisma.user.findFirst({
@@ -77,7 +91,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }),
   ]);
 
-  const [folders, articles] = await Promise.all([
+  const [folders, articlesAll] = await Promise.all([
     prisma.folder.findMany({
       orderBy: { name: "asc" },
       where: { folderId: null, userId: user.id },
@@ -88,9 +102,18 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     }),
   ]);
 
+  for (const article of articlesAll) {
+    if (article.featured) {
+      featuredArticles.push(article);
+    } else {
+      articles.push(article);
+    }
+  }
+
   return {
     props: {
       articles,
+      featuredArticles,
       folders,
       user: githubUser,
     },

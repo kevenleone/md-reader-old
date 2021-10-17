@@ -1,10 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import React from "react";
-import BlogLayout from "src/layouts/blog";
-import FileTreeLayout from "src/layouts/file-tree";
 
-import { fetcher } from "../../lib/fetch";
+import BlogLayout from "@/layouts/blog";
+import FileTreeLayout from "@/layouts/file-tree";
+import { fetcher } from "@/lib/fetch";
 
 type PreviewProps = {
   account: any;
@@ -29,9 +29,13 @@ const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
     return <FileTreeLayout fileTree={fileTree} />;
   }
 
-  const user = `${account}/${repository}`;
-
-  return <BlogLayout project={user} filePath={filePath} markdown={markdown} />;
+  return (
+    <BlogLayout
+      project={`${account}/${repository}`}
+      filePath={filePath}
+      markdown={markdown}
+    />
+  );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -47,8 +51,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const [account, repository, ...path] = ctx.params.id as string[];
 
-  let markdown = "";
   let fileTree = [];
+  let markdown = "";
   let notFound = false;
 
   if (account && repository) {
@@ -77,7 +81,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         fileTree = data.tree.filter(({ path }) => !path.includes("/"));
       }
     } catch (err) {
-      console.error(err);
       notFound = true;
     }
   }
