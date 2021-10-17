@@ -76,9 +76,22 @@ const Profile: React.FC<ProfileProps> = ({
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const users = await prisma.user.findMany({
+    include: { Articles: true, Folder: true },
+  });
+
+  const paths = users.map((user) => ({
+    params: {
+      slug: user.Folder.map(({ slug }) => slug),
+      user: user.login,
+    },
+  }));
+
+  await prisma.$disconnect();
+
   return {
     fallback: true,
-    paths: [{ params: { slug: ["css-developer"], user: "kevenleone" } }],
+    paths,
   };
 };
 
