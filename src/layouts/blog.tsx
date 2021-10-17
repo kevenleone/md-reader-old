@@ -55,6 +55,8 @@ const BlogLayout: React.FC<BlogLayoutProps> = ({
       type="article"
     >
       <Article
+        filePath={filePath.join("/")}
+        title={commit.title}
         breadCrumbPath={id as string[]}
         author={commit.author}
         markdown={markdown}

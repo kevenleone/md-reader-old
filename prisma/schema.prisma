@@ -9,8 +9,7 @@ datasource db {
 }
 
 model views {
-  id    String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  slug  String
+  slug  String @id @map("_id")
   count BigInt @default(1)
 }
 
@@ -50,10 +49,11 @@ model Folder {
 }
 
 model Articles {
-  id      String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  name    String
-  slug    String
-  fileUrl String
+  id       String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name     String
+  slug     String
+  fileUrl  String
+  featured Boolean @default(false)
 
   folderId String?
   userId   Int?

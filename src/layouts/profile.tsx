@@ -6,12 +6,13 @@ import BlogPostCard from "@/components/BlogPostCard";
 import FileCard from "@/components/VideoCard";
 import { ArrowRight, File, Folder as FolderIcon } from "@/icons/icons";
 import { User } from "@/lib/types";
+import { getFilePath } from "@/lib/util";
 
 import { Articles, Folder } from ".prisma/client";
 
 type ProfileLayoutProps = {
   articles?: Articles[];
-  featuredArticles?: any[];
+  featuredArticles?: Articles[];
   folders?: Folder[];
   mergeFolderAndArticles?: boolean;
   user: User;
@@ -39,8 +40,8 @@ const ArticlesList: React.FC<ArticleListProps> = ({ articles, path }) => (
 
 const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   articles = [],
-  children,
   mergeFolderAndArticles,
+  children,
   featuredArticles = [],
   folders = [],
   user,
@@ -48,7 +49,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pb-16">
+    <div className="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto">
       <div className="flex flex-col-reverse sm:flex-row items-start">
         <div className="flex flex-col pr-8">
           <h1 className="font-bold text-3xl md:text-5xl tracking-tight mb-1 text-black dark:text-white">
@@ -75,17 +76,21 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
 
       {children}
 
-      {featuredArticles.length && (
+      {Boolean(featuredArticles.length) && (
         <>
           <h3 className="font-bold text-2xl md:text-4xl tracking-tight mb-6 text-black dark:text-white">
             Featured Articles
           </h3>
           <div className="flex gap-6 flex-col md:flex-row mb-4">
-            <BlogPostCard
-              title="Everything I Know About Style Guides, Design Systems, and Component Libraries"
-              slug="style-guides-component-libraries-design-systems"
-              gradient="from-[#D8B4FE] to-[#818CF8]"
-            />
+            {featuredArticles.map((article) => (
+              <BlogPostCard
+                key={article.id}
+                title={article.name}
+                slug={article.slug}
+                fileUrl={getFilePath(article.fileUrl)}
+                gradient="from-[#D8B4FE] to-[#818CF8]"
+              />
+            ))}
             <BlogPostCard
               title="Past, Present, and Future of React State Management"
               slug="react-state-management"
@@ -100,7 +105,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
         </>
       )}
 
-      {folders.length && (
+      {Boolean(folders.length) && (
         <>
           <h3 className="font-bold text-2xl md:text-4xl tracking-tight mb-6 text-black dark:text-white">
             {mergeFolderAndArticles ? "Folders & Articles" : "Folders"}
@@ -124,7 +129,7 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
         </>
       )}
 
-      {articles.length && !mergeFolderAndArticles && (
+      {Boolean(articles.length) && !mergeFolderAndArticles && (
         <>
           <h3 className="font-bold text-2xl md:text-4xl tracking-tight mb-6 text-black dark:text-white">
             Articles
