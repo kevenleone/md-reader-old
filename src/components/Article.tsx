@@ -1,30 +1,36 @@
 import { format, parseISO } from "date-fns";
 import Image from "next/image";
+import React from "react";
 import readingTime from "reading-time";
 
 import BreadCrumb from "@/components/BreadCrumb";
 import Markdown from "@/components/markdown";
+import ViewCounter from "@/components/ViewCounter";
 
 type ArticleProps = {
   author: {
     name: string;
     avatar_url: string;
   };
-  markdown: string;
-  publishedAt: string;
   breadCrumbPath: string[];
+  markdown: string;
+  filePath: string;
+  publishedAt: string;
+  title: string;
 };
 
 const Article: React.FC<ArticleProps> = ({
   author,
   breadCrumbPath,
+  filePath,
   markdown,
   publishedAt,
+  title,
 }) => {
   return (
     <article className="flex flex-col items-start justify-center w-full max-w-2xl mx-auto mb-16">
       <h1 className="mb-4 font-bold tracking-tight text-black md:text-3xl sm:text-2xl lg:text-4xl dark:text-white">
-        {author.name}
+        {title}
       </h1>
       <div className="flex flex-col items-start justify-between w-full mt-2 md:flex-row md:items-center">
         <div className="flex items-center">
@@ -46,7 +52,7 @@ const Article: React.FC<ArticleProps> = ({
         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 min-w-32 md:mt-0">
           {readingTime(markdown).text}
           {` • `}
-          {/* <ViewCounter slug={commit.slug} /> */}
+          <ViewCounter slug={filePath} />
         </p>
       </div>
 

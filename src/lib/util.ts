@@ -16,3 +16,9 @@ export const slugify = (str: string): string => {
 
   return str;
 };
+
+export const getFilePath = (fileUrl: string): string => {
+  return fileUrl
+    .replace("https://raw.githubusercontent.com/", "")
+    .replace("/HEAD", "");
+};

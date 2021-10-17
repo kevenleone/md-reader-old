@@ -1,16 +1,30 @@
 import classNames from "classnames";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 
 import fetcher from "../lib/fetcher";
 import { Views } from "../lib/types";
 
-export default function BlogPostCard({ gradient, slug, title }) {
-  const { data } = useSWR<Views>(`/api/views/${slug}`, fetcher);
+type BlogPostCardProps = {
+  fileUrl?: string;
+  gradient: string;
+  slug: string;
+  title: string;
+};
+
+const BlogPostCard: React.FC<BlogPostCardProps> = ({
+  fileUrl,
+  gradient,
+  slug,
+  title,
+}) => {
+  const { data } = useSWR<Views>(`/api/views?slug=${fileUrl}`, fetcher);
+  const router = useRouter();
   const views = data?.total;
 
   return (
-    <Link href={`/blog/${slug}`}>
+    <Link href={`${router.asPath}/featured/${slug}`}>
       <a
         className={classNames(
           "transform hover:scale-[1.01] transition-all",
@@ -53,4 +67,6 @@ export default function BlogPostCard({ gradient, slug, title }) {
       </a>
     </Link>
   );
-}
+};
+
+export default BlogPostCard;
