@@ -29,7 +29,7 @@ const FileTreeCard: React.FC<FileTreeCardProps> = ({
         <div className="flex flex-col sm:flex-row justify-between items-baseline">
           <div className="flex items-center">
             <div className="text-gray-300 dark:text-gray-400 text-left mr-6">
-              {index}
+              {icon}
             </div>
             <h4 className="text-lg font-medium w-full text-gray-800 dark:text-gray-100">
               {title}
@@ -41,7 +41,6 @@ const FileTreeCard: React.FC<FileTreeCardProps> = ({
                 {description}
               </p>
             )}
-            {icon}
           </div>
         </div>
       </div>

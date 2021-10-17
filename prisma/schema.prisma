@@ -1,24 +1,68 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
-}
-
-model guestbook {
-  id         BigInt   @id @default(autoincrement())
-  email      String   @db.VarChar(256)
-  body       String   @db.VarChar(500)
-  created_by String   @db.VarChar(256)
-  created_at DateTime @default(now()) @db.DateTime(6)
-  updated_at DateTime @default(now()) @db.DateTime(6)
 }
 
 model views {
-  slug  String @id @db.VarChar(128)
+  id    String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  slug  String
   count BigInt @default(1)
+}
+
+model User {
+  id         Int      @id @map("_id")
+  email      String
+  avatar_url String
+  login      String
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  Folder   Folder[]
+  Articles Articles[]
+
+  @@map("user")
+}
+
+model Folder {
+  id          String @id @default(uuid()) @map("_id")
+  name        String
+  description String
+  slug        String
+
+  userId   Int?
+  folderId String?
+
+  Articles     Articles[]
+  User         User?      @relation(fields: [userId], references: [id])
+  parentFolder Folder?    @relation("FolderToFolder", fields: [folderId], references: [id])
+  Folder       Folder[]   @relation("FolderToFolder")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("folder")
+}
+
+model Articles {
+  id      String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name    String
+  slug    String
+  fileUrl String
+
+  folderId String?
+  userId   Int?
+
+  folder Folder? @relation(fields: [folderId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("articles")
 }

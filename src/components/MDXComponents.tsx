@@ -56,8 +56,6 @@ const MDXComponents = ({ path, project }: MDXComponentsOptions): any => {
           .join("/")
           .replace("blob/", "");
 
-        console.log({ pathPrefix });
-
         file = `${pathPrefix}/${source.replace("../", "")}`;
       } else {
         const pathPrefix = path
@@ -71,8 +69,6 @@ const MDXComponents = ({ path, project }: MDXComponentsOptions): any => {
       const imageSource = isExternalPath
         ? data.src
         : `https://raw.githubusercontent.com/${project}/${file}`;
-
-      console.log({ file, imageSource, path, source });
 
       return (
         <img draggable={false} alt={data.alt} {...data} src={imageSource}></img>

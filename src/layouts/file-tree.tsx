@@ -31,7 +31,7 @@ const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree }) => {
       <div className="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pb-16">
         <div className="flex flex-col-reverse sm:flex-row items-start">
           <div className="flex flex-col pr-8">
-            <h1 className="font-bold text-3xl md:text-6xl tracking-tight mb-1 text-black dark:text-white">
+            <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl  tracking-tight mb-1 text-black dark:text-white">
               {`${account}/${repository}`}
             </h1>
 
@@ -40,12 +40,12 @@ const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree }) => {
             </p>
           </div>
           {avatar_url && (
-            <div className="w-[80px] sm:w-[176px] relative mb-8 sm:mb-0 mr-auto">
+            <div className="w-[80px] sm:w-[200px] relative mb-8 sm:mb-0 mr-auto">
               <Image
                 alt={`${account} profile image`}
                 title={`${account} profile image`}
-                height={176}
-                width={176}
+                height={200}
+                width={200}
                 src={avatar_url}
                 className="rounded-full"
               />

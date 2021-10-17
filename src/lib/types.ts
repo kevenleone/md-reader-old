@@ -10,6 +10,13 @@ export type Views = {
   total: number;
 };
 
+export type User = {
+  name: string;
+  bio: string;
+  company: string;
+  avatar_url: string;
+};
+
 export type Repo = {
   description: string;
   id: number;

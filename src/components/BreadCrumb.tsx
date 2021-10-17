@@ -2,12 +2,12 @@ import classNames from "classnames";
 import { useRouter } from "next/router";
 import React from "react";
 
-const BreadCrumb: React.FC = () => {
-  const router = useRouter();
+type BreadCrumbProps = {
+  paths: string[];
+};
 
-  const {
-    query: { id: paths = [] },
-  } = useRouter();
+const BreadCrumb: React.FC<BreadCrumbProps> = ({ paths = [] }) => {
+  const router = useRouter();
 
   const activePath = paths[paths.length - 1];
 
@@ -33,7 +33,7 @@ const BreadCrumb: React.FC = () => {
                 "font-bold text-gray-900": isActivePath,
               },
               { "text-gray-600": !isActivePath },
-              "text-2md md:text-3md mb-6 mr-2  dark:text-white"
+              "mb-6 mr-2 dark:text-white text-md hidden md:block"
             )}
             key={index}
           >

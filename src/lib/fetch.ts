@@ -1,20 +1,27 @@
-export function fetcher<T = any>(
+export async function fetcher<T = any>(
   url: string,
-  params?: RequestInit
-): Promise<T> {
-  return fetch(url, {
-    ...params,
-    headers: {
-      Accept: "application/vnd.github.v3+json",
-      Authorization: `bearer ${process.env.NEXT_PUBLIC_GITHUB_API_KEY}`,
-    },
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
+  params?: RequestInit,
+  onlyResponse = false
+): Promise<T | Response | string> {
+  try {
+    const response = await fetch(url, {
+      ...params,
+      headers: {
+        Accept: "application/vnd.github.v3+json",
+        Authorization: `bearer ${process.env.NEXT_PUBLIC_GITHUB_API_KEY}`,
+      },
+    });
 
-      throw new Error("err");
-    })
-    .catch((error) => error);
+    if (onlyResponse) {
+      return response;
+    }
+
+    if (response.ok) {
+      return response.json();
+    }
+
+    throw new Error("Error.");
+  } catch (error) {
+    return error;
+  }
 }

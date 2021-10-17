@@ -33,15 +33,17 @@ const FileTreeList: React.FC<FileTreeListProps> = ({ fileTree = [] }) => {
     query: { id: paths = [] },
   } = useRouter();
 
+  const fileTreeList = filterFileTree(fileTree);
+
   return (
     <>
-      <BreadCrumb />
+      <BreadCrumb paths={paths as string[]} />
 
       <h3 className="font-bold text-2xl md:text-3xl tracking-tight mb-6 text-black dark:text-white">
-        File Tree
+        File Tree ({fileTreeList.length})
       </h3>
 
-      {filterFileTree(fileTree).map((file, index) => (
+      {fileTreeList.map((file, index) => (
         <ViewCard
           href={`/preview/${(paths as string[]).join("/")}/${file.path}`}
           icon={file.type === "blob" ? <File /> : <Folder />}

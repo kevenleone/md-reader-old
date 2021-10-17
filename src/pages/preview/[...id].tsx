@@ -14,7 +14,12 @@ type PreviewProps = {
 };
 
 const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
-  const { isFallback } = useRouter();
+  const {
+    isFallback,
+    query: { id = [] },
+  } = useRouter();
+
+  const [account, repository, ...filePath] = id;
 
   if (isFallback) {
     return <b>Loading</b>;
@@ -24,7 +29,9 @@ const Preview: React.FC<PreviewProps> = ({ fileTree, markdown }) => {
     return <FileTreeLayout fileTree={fileTree} />;
   }
 
-  return <BlogLayout markdown={markdown} />;
+  const user = `${account}/${repository}`;
+
+  return <BlogLayout project={user} filePath={filePath} markdown={markdown} />;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
