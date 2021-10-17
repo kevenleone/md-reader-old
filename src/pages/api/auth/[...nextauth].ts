@@ -51,6 +51,9 @@ export default NextAuth({
       return true;
     },
   },
+  jwt: {
+    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+  },
   providers: [
     GithubProvider({
       clientId: process.env.NEXT_APP_GITHUB_ID,
