@@ -25,7 +25,15 @@ const Profile: React.FC<ProfileProps> = ({ article, markdown, user }) => {
   }
 
   return (
-    <Container>
+    <Container
+      customMeta={{
+        description: `${article.name} description...`,
+        image: `https://md-reader.vercel.app/api/thumbnail?title=${
+          article.name || "Empty"
+        }&bg=black`,
+        title: article.name,
+      }}
+    >
       <ProfileLayout user={user} />
 
       <Article

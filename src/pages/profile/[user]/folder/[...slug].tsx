@@ -38,7 +38,15 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
   return (
-    <Container>
+    <Container
+      customMeta={{
+        description: `${article?.name} description...`,
+        image: `https://md-reader.vercel.app/api/thumbnail?title=${
+          article?.name || "Empty"
+        }&bg=black`,
+        title: article?.name,
+      }}
+    >
       <ProfileLayout
         articles={articles}
         folders={folders}
@@ -124,20 +132,19 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   if (isFilePreview) {
     article = await prisma.articles.findFirst({ where: { slug: lastSlug } });
-
     const response = await fetcher(article.fileUrl, null, true);
-
     markdown = await response.text();
   } else {
-    folders = await prisma.folder.findMany({
-      orderBy: { name: "asc" },
-      where: { folderId: folder.id, userId: user.id },
-    });
-
-    articles = await prisma.articles.findMany({
-      orderBy: { name: "asc" },
-      where: { folderId: folder.id, userId: user.id },
-    });
+    [folders, articles] = await Promise.all([
+      prisma.folder.findMany({
+        orderBy: { name: "asc" },
+        where: { folderId: folder.id, userId: user.id },
+      }),
+      prisma.articles.findMany({
+        orderBy: { name: "asc" },
+        where: { folderId: folder.id, userId: user.id },
+      }),
+    ]);
   }
 
   return {

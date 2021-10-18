@@ -40,7 +40,7 @@ export default function Container(props) {
   // After mounting, we have access to the theme
   useEffect(() => setMounted(true), []);
 
-  const { children, ...customMeta } = props;
+  const { children, customMeta } = props;
   const router = useRouter();
   const meta = {
     description: `Markdown Reader`,
@@ -49,7 +49,7 @@ export default function Container(props) {
     ...customMeta,
   };
 
-  const website = "https://md-reader-kevenleone.vercel.app";
+  const website = "https://md-reader.vercel.app";
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
