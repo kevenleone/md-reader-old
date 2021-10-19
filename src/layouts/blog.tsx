@@ -41,19 +41,11 @@ const BlogLayout: React.FC<BlogLayoutProps> = ({
       name: dataOne.commit?.author?.name || "",
     },
     publishedAt: dataOne.commit?.author?.date || new Date().toISOString(),
-    // slug: filePath.join("-").toLowerCase(),
-    summary: "Testanndo...",
     title: filePath[filePath.length - 1],
   };
 
   return (
-    <Container
-      title={commit.title}
-      description={commit.summary}
-      image={`https://github.com/${project}.png`}
-      date={new Date(commit.publishedAt).toISOString()}
-      type="article"
-    >
+    <Container>
       <Article
         filePath={filePath.join("/")}
         title={commit.title}
