@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
   if (account && repository) {
     try {
-      const data = await fetcher<any>(
+      const data = await fetcher(
         `https://api.github.com/repos/${account}/${repository}/git/trees/HEAD:?recursive=1`
       );
 
@@ -67,7 +67,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         );
 
         if (fileExistOnGithub) {
-          const response = await fetcher<any>(fileExistOnGithub.url);
+          const response = await fetcher(fileExistOnGithub.url);
 
           if (fileExistOnGithub.type === "blob") {
             markdown = Buffer.from(response.content, "base64").toString(

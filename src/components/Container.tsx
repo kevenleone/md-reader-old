@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
@@ -29,7 +29,11 @@ function NavItem({ href, text }) {
   );
 }
 
-export default function Container({ children }) {
+type ContainerProps = {
+  children: ReactElement;
+};
+
+const Container: React.FC<ContainerProps> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const { data: session } = useSession();
@@ -111,4 +115,6 @@ export default function Container({ children }) {
       </main>
     </div>
   );
-}
+};
+
+export default Container;
