@@ -137,11 +137,12 @@ const ProfileLayout: React.FC<ProfileLayoutProps> = ({
           <div className="flex w-full flex-col mb-10">
             <ArticlesList articles={articles} path={router.asPath} />
 
-            <Link href="/blog">
-              <a className="flex mt-8 text-gray-600 dark:text-gray-400 leading-7 rounded-lg hover:text-gray-800 dark:hover:text-gray-200 transition-all h-6">
-                Read all articles
-                <ArrowRight />
-              </a>
+            <Link
+              href="/blog"
+              className="flex mt-8 text-gray-600 dark:text-gray-400 leading-7 rounded-lg hover:text-gray-800 dark:hover:text-gray-200 transition-all h-6"
+            >
+              Read all articles
+              <ArrowRight />
             </Link>
           </div>
         </>
