@@ -1,6 +1,6 @@
 import { Articles, Folder } from "@prisma/client";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { signIn, signOut } from "next-auth/react";
+import { GetServerSideProps } from "next";
+import { getSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import Container from "@/components/Container";
@@ -14,6 +14,56 @@ type ProfileProps = {
   featuredArticles: Articles[];
   articles: Articles[];
   user: User;
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const {
+    params: { user: username },
+  } = ctx;
+
+  const session = await getSession({ ctx });
+
+  const featuredArticles = [];
+  const articles = [];
+
+  const [githubUser, user] = await Promise.all([
+    fetcher<User>(`https://api.github.com/users/${username}`, {
+      headers: {
+        Authorization: `Bearer ${session.user.access_token}`,
+      },
+    }),
+    prisma.user.findFirst({
+      where: { login: username as string },
+    }),
+  ]);
+
+  const [folders, articlesAll] = await Promise.all([
+    prisma.folder.findMany({
+      orderBy: { name: "asc" },
+      where: { folderId: null, userId: user.id },
+    }),
+    prisma.articles.findMany({
+      orderBy: { name: "asc" },
+      where: { folderId: null, userId: user.id },
+    }),
+  ]);
+
+  for (const article of articlesAll) {
+    if (article.featured) {
+      featuredArticles.push(article);
+    } else {
+      articles.push(article);
+    }
+  }
+
+  return {
+    props: {
+      articles,
+      featuredArticles,
+      folders,
+      user: githubUser,
+    },
+  };
 };
 
 const Profile: React.FC<ProfileProps> = ({
@@ -58,66 +108,6 @@ const Profile: React.FC<ProfileProps> = ({
       </ProfileLayout>
     </Container>
   );
-};
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const users = await prisma.user.findMany({
-    include: { Articles: true, Folder: true },
-  });
-
-  const paths = users.map((user) => ({
-    params: {
-      user: user.login,
-    },
-  }));
-
-  await prisma.$disconnect();
-
-  return { fallback: true, paths };
-};
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const {
-    params: { user: username },
-  } = ctx;
-
-  const featuredArticles = [];
-  const articles = [];
-
-  const [githubUser, user] = await Promise.all([
-    fetcher<User>(`https://api.github.com/users/${username}`),
-    prisma.user.findFirst({
-      where: { login: username as string },
-    }),
-  ]);
-
-  const [folders, articlesAll] = await Promise.all([
-    prisma.folder.findMany({
-      orderBy: { name: "asc" },
-      where: { folderId: null, userId: user.id },
-    }),
-    prisma.articles.findMany({
-      orderBy: { name: "asc" },
-      where: { folderId: null, userId: user.id },
-    }),
-  ]);
-
-  for (const article of articlesAll) {
-    if (article.featured) {
-      featuredArticles.push(article);
-    } else {
-      articles.push(article);
-    }
-  }
-
-  return {
-    props: {
-      articles,
-      featuredArticles,
-      folders,
-      user: githubUser,
-    },
-  };
 };
 
 export default Profile;

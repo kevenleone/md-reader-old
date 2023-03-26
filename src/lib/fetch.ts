@@ -1,14 +1,14 @@
 export async function fetcher<T = any>(
   url: string,
-  params?: RequestInit,
+  options?: RequestInit,
   onlyResponse = false
 ): Promise<T | Response | string> {
   try {
     const response = await fetch(url, {
-      ...params,
+      ...options,
       headers: {
         Accept: "application/vnd.github.v3+json",
-        Authorization: `bearer ${process.env.NEXT_PUBLIC_GITHUB_API_KEY}`,
+        ...options?.headers,
       },
     });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeCodeTitles from "rehype-code-titles";
@@ -17,29 +17,37 @@ type MarkdownProps = {
 const Markdown: React.FC<MarkdownProps> = ({ children, params }) => {
   const updateComponents = components(params);
 
+  const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
+
   return (
     <div className="w-full prose dark:prose-dark max-w-none">
-      <ReactMarkdown
-        skipHtml
-        components={updateComponents}
-        rehypePlugins={[
-          rehypeSlug,
-          remarkEmoji,
-          rehypeCodeTitles,
-          [
-            rehypeAutolinkHeadings,
-            {
-              properties: {
-                className: ["anchor"],
+      {domLoaded && (
+        <ReactMarkdown
+          skipHtml
+          components={updateComponents}
+          rehypePlugins={[
+            rehypeSlug,
+            remarkEmoji,
+            rehypeCodeTitles,
+            [
+              rehypeAutolinkHeadings,
+              {
+                properties: {
+                  className: ["anchor"],
+                },
               },
-            },
-          ],
-          [rehypePrism, { ignoreMissing: true, showLineNumbers: true }],
-        ]}
-        remarkPlugins={[remarkGfm]}
-      >
-        {children}
-      </ReactMarkdown>
+            ],
+            [rehypePrism, { ignoreMissing: true, showLineNumbers: true }],
+          ]}
+          remarkPlugins={[remarkGfm]}
+        >
+          {children}
+        </ReactMarkdown>
+      )}
     </div>
   );
 };

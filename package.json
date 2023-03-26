@@ -7,6 +7,7 @@
     "build": "next build",
     "migrate-dev": "prisma migrate dev",
     "dev": "next dev",
+    "prisma:studio": "prisma studio",
     "lint": "eslint src --ext ts,tsx",
     "start": "next start"
   },

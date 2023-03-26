@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Footer from "../components/Footer";
 import MobileMenu from "../components/MobileMenu";
@@ -29,7 +29,7 @@ function NavItem({ href, text }) {
 }
 
 type ContainerProps = {
-  children: ReactElement;
+  children: React.ReactNode;
 };
 
 const Container: React.FC<ContainerProps> = ({ children }) => {
