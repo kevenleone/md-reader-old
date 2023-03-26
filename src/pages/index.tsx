@@ -9,23 +9,21 @@ const Home = () => {
   console.log(session);
 
   return (
-    <Container>
-      <div className="text-white">
-        {session ? (
-          <>
-            Signed in as {session.user.email} <br />
-            <button onClick={() => signOut()}>Sign out</button>
-          </>
-        ) : (
-          <>
-            <p className="text-white">Not signed in</p>
-            <button className="text-white" onClick={() => signIn()}>
-              Sign in
-            </button>
-          </>
-        )}
-      </div>
-    </Container>
+    <div className="text-white">
+      {session ? (
+        <>
+          Signed in as {session.user.email} <br />
+          <button onClick={() => signOut()}>Sign out</button>
+        </>
+      ) : (
+        <>
+          <p className="text-white">Not signed in</p>
+          <button className="text-white" onClick={() => signIn()}>
+            Sign in
+          </button>
+        </>
+      )}
+    </div>
   );
 };
 

@@ -23,6 +23,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const session = await getSession({ ctx });
 
+  console.log({ session });
+
+  if (!session) {
+    return {
+      notFound: true,
+    };
+  }
+
   const featuredArticles = [];
   const articles = [];
 
@@ -83,30 +91,28 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
   return (
-    <Container>
-      <ProfileLayout
-        featuredArticles={featuredArticles}
-        articles={articles}
-        folders={folders}
-        user={user}
-      >
-        <div>
-          <button
-            className="p-3 dark:bg-white bg-black rounded mb-8"
-            onClick={followUser}
-          >
-            Follow Me
-          </button>
+    <ProfileLayout
+      featuredArticles={featuredArticles}
+      articles={articles}
+      folders={folders}
+      user={user}
+    >
+      <div>
+        <button
+          className="p-3 dark:bg-white bg-black rounded mb-8"
+          onClick={followUser}
+        >
+          Follow Me
+        </button>
 
-          <button
-            className="p-3 ml-4 dark:bg-white bg-black rounded mb-8"
-            onClick={() => signOut()}
-          >
-            Logout
-          </button>
-        </div>
-      </ProfileLayout>
-    </Container>
+        <button
+          className="p-3 ml-4 dark:bg-white bg-black rounded mb-8"
+          onClick={() => signOut()}
+        >
+          Logout
+        </button>
+      </div>
+    </ProfileLayout>
   );
 };
 

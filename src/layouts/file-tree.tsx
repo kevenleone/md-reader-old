@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 
-import Container from "@/components/Container";
 import FileTreeList from "@/components/FileTree";
 import fetcher from "@/lib/fetcher";
 import { FileTree, Repo } from "@/lib/types";
@@ -27,35 +26,33 @@ const FileTreeLayout: React.FC<FileTreeLayoutProps> = ({ fileTree }) => {
   const avatar_url = repo.owner?.avatar_url;
 
   return (
-    <Container>
-      <div className="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pb-16">
-        <div className="flex flex-col-reverse sm:flex-row items-start">
-          <div className="flex flex-col pr-8">
-            <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl  tracking-tight mb-1 text-black dark:text-white">
-              {`${account}/${repository}`}
-            </h1>
+    <div className="flex flex-col justify-center items-start max-w-2xl border-gray-200 dark:border-gray-700 mx-auto pb-16">
+      <div className="flex flex-col-reverse sm:flex-row items-start">
+        <div className="flex flex-col pr-8">
+          <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl  tracking-tight mb-1 text-black dark:text-white">
+            {`${account}/${repository}`}
+          </h1>
 
-            <p className="mt-5 text-gray-600 dark:text-gray-400 mb-8">
-              {repo.description}
-            </p>
-          </div>
-          {avatar_url && (
-            <div className="w-[80px] sm:w-[200px] relative mb-8 sm:mb-0 mr-auto">
-              <Image
-                alt={`${account} profile image`}
-                title={`${account} profile image`}
-                height={200}
-                width={200}
-                src={avatar_url}
-                className="rounded-full"
-              />
-            </div>
-          )}
+          <p className="mt-5 text-gray-600 dark:text-gray-400 mb-8">
+            {repo.description}
+          </p>
         </div>
-
-        <FileTreeList fileTree={fileTree} />
+        {avatar_url && (
+          <div className="w-[80px] sm:w-[200px] relative mb-8 sm:mb-0 mr-auto">
+            <Image
+              alt={`${account} profile image`}
+              title={`${account} profile image`}
+              height={200}
+              width={200}
+              src={avatar_url}
+              className="rounded-full"
+            />
+          </div>
+        )}
       </div>
-    </Container>
+
+      <FileTreeList fileTree={fileTree} />
+    </div>
   );
 };
 

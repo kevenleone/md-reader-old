@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 
 import Article from "@/components/Article";
-import Container from "@/components/Container";
 import { fetcher } from "@/lib/fetch";
 
 type BlogLayoutProps = {
@@ -45,16 +44,14 @@ const BlogLayout: React.FC<BlogLayoutProps> = ({
   };
 
   return (
-    <Container>
-      <Article
-        filePath={filePath.join("/")}
-        title={commit.title}
-        breadCrumbPath={id as string[]}
-        author={commit.author}
-        markdown={markdown}
-        publishedAt={commit.publishedAt}
-      />
-    </Container>
+    <Article
+      filePath={filePath.join("/")}
+      title={commit.title}
+      breadCrumbPath={id as string[]}
+      author={commit.author}
+      markdown={markdown}
+      publishedAt={commit.publishedAt}
+    />
   );
 };
 

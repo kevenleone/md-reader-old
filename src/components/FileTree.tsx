@@ -1,3 +1,4 @@
+import { StarIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -5,6 +6,9 @@ import BreadCrumb from "@/components/BreadCrumb";
 import ViewCard from "@/components/VideoCard";
 import { File, Folder } from "@/icons/icons";
 import { FileTree } from "@/lib/types";
+
+import DialogDemo from "./ui/Dialog";
+import DropdownMenuDemo from "./ui/Dropdown";
 
 type FileTreeListProps = {
   fileTree: FileTree[];
@@ -45,9 +49,21 @@ const FileTreeList: React.FC<FileTreeListProps> = ({ fileTree = [] }) => {
 
       {fileTreeList.map((file, index) => (
         <ViewCard
+          description={
+            <DialogDemo
+              description={
+                <span>
+                  Choose where you want to save <b>{file.path}</b> on your
+                  profile
+                </span>
+              }
+              title={file.path}
+            >
+              OAskdoaskodasd
+            </DialogDemo>
+          }
           href={`/preview/${(paths as string[]).join("/")}/${file.path}`}
           icon={file.type === "blob" ? <File /> : <Folder />}
-          index={index + 1}
           key={index}
           title={file.path}
         />
