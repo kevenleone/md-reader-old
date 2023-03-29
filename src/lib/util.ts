@@ -1,3 +1,5 @@
+import { FileTree } from "./types";
+
 export const slugify = (str: string): string => {
   str = str.replace(/^\s+|\s+$/g, ""); // trim
   str = str.toLowerCase();
@@ -21,4 +23,22 @@ export const getFilePath = (fileUrl: string): string => {
   return fileUrl
     .replace("https://raw.githubusercontent.com/", "")
     .replace("/HEAD", "");
+};
+
+const allowedExtensions = [".md", ".markdown", ".txt"];
+
+export const filterFileTree = (fileTree: FileTree[]) => {
+  const fileType = (type) => (type === "blob" ? "z" : "a");
+
+  return fileTree
+    .filter(({ path, type }) => {
+      if (type === "blob") {
+        return allowedExtensions.some((extension) =>
+          path.toLowerCase().endsWith(extension)
+        );
+      }
+
+      return true;
+    })
+    .sort((a, b) => fileType(a.type).localeCompare(fileType(b.type)));
 };

@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import Article from "@/components/Article";
-import Container from "@/components/Container";
 import ProfileLayout from "@/layouts/profile";
 import { fetcher } from "@/lib/fetch";
 import prisma from "@/lib/prisma";
@@ -25,7 +24,7 @@ const Profile: React.FC<ProfileProps> = ({ article, markdown, user }) => {
   }
 
   return (
-    <Container>
+    <>
       <ProfileLayout user={user} />
 
       <Article
@@ -36,7 +35,7 @@ const Profile: React.FC<ProfileProps> = ({ article, markdown, user }) => {
         publishedAt={article.created_at.toISOString()}
         author={{ avatar_url: user.avatar_url, name: article.name }}
       />
-    </Container>
+    </>
   );
 };
 

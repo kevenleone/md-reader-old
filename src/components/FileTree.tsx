@@ -6,30 +6,15 @@ import BreadCrumb from "@/components/BreadCrumb";
 import ViewCard from "@/components/VideoCard";
 import { File, Folder } from "@/icons/icons";
 import { FileTree } from "@/lib/types";
+import { filterFileTree } from "@/lib/util";
 
+import FileDialog from "./files/FileDialog";
 import DialogDemo from "./ui/Dialog";
 import DropdownMenuDemo from "./ui/Dropdown";
+import SwitchDemo from "./ui/Switch";
 
 type FileTreeListProps = {
   fileTree: FileTree[];
-};
-
-const allowedExtensions = [".md", ".markdown", ".txt"];
-
-const filterFileTree = (fileTree: FileTree[]) => {
-  const fileType = (type) => (type === "blob" ? "z" : "a");
-
-  return fileTree
-    .filter(({ path, type }) => {
-      if (type === "blob") {
-        return allowedExtensions.some((extension) =>
-          path.toLowerCase().endsWith(extension)
-        );
-      }
-
-      return true;
-    })
-    .sort((a, b) => fileType(a.type).localeCompare(fileType(b.type)));
 };
 
 const FileTreeList: React.FC<FileTreeListProps> = ({ fileTree = [] }) => {
@@ -49,19 +34,7 @@ const FileTreeList: React.FC<FileTreeListProps> = ({ fileTree = [] }) => {
 
       {fileTreeList.map((file, index) => (
         <ViewCard
-          description={
-            <DialogDemo
-              description={
-                <span>
-                  Choose where you want to save <b>{file.path}</b> on your
-                  profile
-                </span>
-              }
-              title={file.path}
-            >
-              OAskdoaskodasd
-            </DialogDemo>
-          }
+          description={<FileDialog file={file} />}
           href={`/preview/${(paths as string[]).join("/")}/${file.path}`}
           icon={file.type === "blob" ? <File /> : <Folder />}
           key={index}

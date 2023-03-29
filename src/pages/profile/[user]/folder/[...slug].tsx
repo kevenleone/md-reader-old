@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import Article from "@/components/Article";
-import Container from "@/components/Container";
 import ProfileLayout from "@/layouts/profile";
 import { fetcher } from "@/lib/fetch";
 import prisma from "@/lib/prisma";
@@ -38,7 +37,7 @@ const Profile: React.FC<ProfileProps> = ({
   };
 
   return (
-    <Container>
+    <>
       <ProfileLayout
         articles={articles}
         folders={folders}
@@ -72,7 +71,7 @@ const Profile: React.FC<ProfileProps> = ({
           author={{ avatar_url: user.avatar_url, name: article.name }}
         />
       )}
-    </Container>
+    </>
   );
 };
 

@@ -1,12 +1,24 @@
+import { GetServerSideProps } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import Container from "../components/Container";
+import prisma from "@/lib/prisma";
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const Home = () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const folders = await prisma.folder.findMany({
+    include: { Folder: true, parentFolder: true },
+  });
+
+  return {
+    props: {
+      folders,
+    },
+  };
+};
+
+const Home = ({ folders }) => {
   const { data: session } = useSession();
 
-  console.log(session);
+  console.log(folders);
 
   return (
     <div className="text-white">

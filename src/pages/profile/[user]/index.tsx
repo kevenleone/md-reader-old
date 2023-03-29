@@ -3,7 +3,6 @@ import { GetServerSideProps } from "next";
 import { getSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import Container from "@/components/Container";
 import ProfileLayout from "@/layouts/profile";
 import { fetcher } from "@/lib/fetch";
 import prisma from "@/lib/prisma";
